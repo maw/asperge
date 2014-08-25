@@ -30,7 +30,25 @@ def load(f, sheet=None):
     return sh
 
 def get_colnames(s, x=0):
-    return [v.value for v in s.row(x)]
+    ret = []
+    cache = {}
+    
+    for v in s.row(x):
+        val = v.value
+        if val == "":
+            val = "xcol"
+        if val in cache:
+            cnt0 = cache[val]
+            cnt = cnt0 + 1
+            nval = "%s%d" % (val, cnt)
+            cache[val] += 1
+            cache[nval] = 0
+        else:
+            cache[val] = 0
+            nval = val
+        ret.append('"%s"' % (nval,))
+
+    return ret
 
 def setup_db(dest, cols, table):
     import sqlite3
