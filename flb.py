@@ -72,7 +72,7 @@ def populate_db(conn, sh, table, defn):
     
     dbg("now working")
 
-    for idx in range(first, sh.nrows - 1):
+    for idx in range(first, sh.nrows):
         row = sh.row(idx)
         
         #tmplA_slots = "?"
