@@ -2,6 +2,7 @@
 
 import datetime
 from optparse import OptionParser
+import subprocess
 import sys
 
 import xlrd
@@ -122,6 +123,9 @@ def main(args):
     conn = setup_db(options.dest, defn, options.table)
     populate_db(conn, s, options.table, defn)
     dbg("database populated")
-
+    
+    if opts.web:
+        subprocess.getstatusoutput("python ./web.py")
+    
 if __name__ == '__main__':
     sys.exit(main(sys.argv))
