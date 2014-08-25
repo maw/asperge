@@ -109,7 +109,7 @@ def main(args):
 
     (options, args) = p.parse_args()
     
-    print("options: %s; args: %s" % (options, args))
+    dbg("options: %s; args: %s" % (options, args))
     if len(args) != 1:
         bail("need exactly one non-flag argument")
     s = load(args[0])
