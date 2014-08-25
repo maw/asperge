@@ -103,8 +103,8 @@ def main(args):
                  help="x origin")
     p.add_option("-y", "--origin-y", dest="yorigin", default="1",
                  help="y origin")
-    p.add_option("-s", "--sheet=", dest="sheet",
-                 help="file to load")
+    p.add_option("-s", "--sheet=", dest="sheet", default=0,
+                 help="sheet to load if not the first")
     p.add_option("-r", "--run-sqlite", dest="run",
                  help="run sqlite upon load")
     p.add_option("-w", "--start-webserver", dest="web",
