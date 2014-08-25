@@ -62,7 +62,12 @@ def setup_db(dest, cols, table):
     dbg(ct)
 
     c = conn.cursor()
-    c.execute(ct)
+    try:
+        c.execute(ct)
+    except sqlite3.OperationalError as oe:
+        dbg("that was bad: %s" % (oe,))
+        bail("", err=2)
+    
     c.close()
     
     return conn
