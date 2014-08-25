@@ -116,7 +116,7 @@ def main(args):
     cols = get_colnames(s)
     print("%s" % (cols,))
     from sniffer import sniff_types
-    defn = sniff_types(s, cols)
+    defn = sniff_types(s, cols, fast=True)
     conn = setup_db(options.dest, defn, options.table)
     populate_db(conn, s, options.table, defn)
 
