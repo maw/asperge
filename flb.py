@@ -90,7 +90,7 @@ def populate_db(conn, sh, table, defn):
 
 def main(args):
     p = OptionParser()
-    p.add_option("-d", "--dest", dest="dest", default="./myspreadsheet.db",
+    p.add_option("-d", "--dbfile", dest="dest", default="./myspreadsheet.db",
                  help="destination file")
     p.add_option("-t", "--table", dest="table", default="main",
                  help="name of table")
