@@ -13,6 +13,7 @@ def bail(msg, err=1):
     sys.exit(err)
 
 def load(f, sheet=None):
+    dbg("loading spreadsheet...")
     if sheet is None:
         sheet = 0
 
@@ -24,6 +25,7 @@ def load(f, sheet=None):
     else:
         bail('bugger all, I dunno', err=2)
     
+    dbg("spreadsheet loaded")
     return sh
 
 def get_colnames(s, x=0):
@@ -80,7 +82,7 @@ def populate_db(conn, sh, table, defn):
         vals = tuple([cell.value for cell in row])
         
         conn.execute(tmpl, vals)
-        dbg("did something")
+        #dbg("did something")
         if idx == 0:
             continue
     conn.commit()
@@ -119,7 +121,7 @@ def main(args):
     defn = sniff_types(s, cols, fast=True)
     conn = setup_db(options.dest, defn, options.table)
     populate_db(conn, s, options.table, defn)
-
+    dbg("database populated")
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv))
