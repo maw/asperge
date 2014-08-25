@@ -124,7 +124,7 @@ def main(args):
     populate_db(conn, s, options.table, defn)
     dbg("database populated")
     
-    if opts.web:
+    if options.web:
         subprocess.getstatusoutput("python ./web.py")
     
 if __name__ == '__main__':
