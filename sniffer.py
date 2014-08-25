@@ -1,6 +1,10 @@
 from dbg import dbg
 
-def sniff_types(s, cols):
+def sniff_types(s, cols, fast=False):
+    if fast == True:
+        other = ['TEXT' for col in cols]
+        return zip(cols, other)
+    
     ret = []
 
     def to_int(s):
