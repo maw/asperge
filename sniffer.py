@@ -19,7 +19,16 @@ def sniff_types(s, cols):
         import dateutil.parser
         try:
             return dateutil.parser.parse(s)
+        except OverflowError as oe:
+            dbg("problem 'date parsing' value %s" % (s,))
+            return None
+        except ValueError as ve:
+            dbg("problem 'date parsing' value %s" % (s,))
+            return None
         except TypeError as te:
+            return None
+        except:
+            dbg("problem 'date parsing' value %s" % (s,))
             return None
     
     class eno(object):
