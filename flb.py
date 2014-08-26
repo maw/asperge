@@ -30,7 +30,25 @@ def load(f, sheet=None):
     return sh
 
 def get_colnames(s, x=0):
-    return [v.value for v in s.row(x)]
+    ret = []
+    cache = {}
+    
+    for v in s.row(x):
+        val = v.value
+        if val == "":
+            val = "xcol"
+        if val in cache:
+            cnt0 = cache[val]
+            cnt = cnt0 + 1
+            nval = "%s%d" % (val, cnt)
+            cache[val] += 1
+            cache[nval] = 0
+        else:
+            cache[val] = 0
+            nval = val
+        ret.append('"%s"' % (nval,))
+
+    return ret
 
 def setup_db(dest, cols, table):
     import sqlite3
@@ -44,7 +62,12 @@ def setup_db(dest, cols, table):
     dbg(ct)
 
     c = conn.cursor()
-    c.execute(ct)
+    try:
+        c.execute(ct)
+    except sqlite3.OperationalError as oe:
+        dbg("that was bad: %s" % (oe,))
+        bail("", err=2)
+    
     c.close()
     
     return conn
@@ -103,8 +126,8 @@ def main(args):
                  help="x origin")
     p.add_option("-y", "--origin-y", dest="yorigin", default="1",
                  help="y origin")
-    p.add_option("-s", "--sheet=", dest="sheet",
-                 help="file to load")
+    p.add_option("-s", "--sheet=", dest="sheet", default=0,
+                 help="sheet to load if not the first")
     p.add_option("-r", "--run-sqlite", dest="run",
                  help="run sqlite upon load")
     p.add_option("-w", "--start-webserver", dest="web",
@@ -124,7 +147,7 @@ def main(args):
     populate_db(conn, s, options.table, defn)
     dbg("database populated")
     
-    if opts.web:
+    if options.web:
         subprocess.getstatusoutput("python ./web.py")
     
 if __name__ == '__main__':
