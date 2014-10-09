@@ -12,3 +12,22 @@ dans leur farces poétiques et grossières comme une féerie de Shakespeare,
 à changer mon pot de chambre en un vase de parfum.
 
 Marcel Proust, Du côté de chez Swann.
+
+
+Convert an excel file into a SQLite database.
+
+If you're often required to deal with large spreadsheets (they're used
+as databases in a surprisingly large number of organizations) this might
+be useful for you.  It's been useful for me.
+
+My wishlist, in no particular order:
+
+- Better packaging.
+- Better sniffing, structure and data types.
+- A way to use other SQL databases without having to set up all sorts of
+  nonsense. SQLite is a nice piece of software, but in general I'm more
+  comfortable using postgres.
+- json output, with the ultimate goal being to load your spreadsheets into
+  document-oriented databases.
+- HTML table + good table js library output, ideally combined with an
+  embedded webserver.
