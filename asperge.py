@@ -41,6 +41,9 @@ def ColIdxToXlName(idx):
         else:
             return chr(idx + ord('A') - 1) + result
 
+def idxmap(idx):
+    return ColIdxToXlName(idx + 1)
+
 def get_colnames(s, x=0):
     ret = []
     cache = {}
