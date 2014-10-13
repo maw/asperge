@@ -29,6 +29,18 @@ def load(f, sheet=None):
     dbg("spreadsheet loaded")
     return sh
 
+# this comes from http://stackoverflow.com/a/182009 -- thanks, RoMa.
+def ColIdxToXlName(idx):
+    if idx < 1:
+        raise ValueError("Index is too small")
+    result = ""
+    while True:
+        if idx > 26:
+            idx, r = divmod(idx - 1, 26)
+            result = chr(r + ord('A')) + result
+        else:
+            return chr(idx + ord('A') - 1) + result
+
 def get_colnames(s, x=0):
     ret = []
     cache = {}
