@@ -20,6 +20,12 @@ If you're often required to deal with large spreadsheets (they're used
 as databases in a surprisingly large number of organizations) this might
 be useful for you.  It's been useful for me.
 
+Miscellaneous notes:
+
+- The name of a field that would clash with an SQL keyword automagically
+  has a _ appended to it.  If this happens at all, you have my sympathies,
+  more so if it happens past 'AS'.
+
 My wishlist, in no particular order:
 
 - Better packaging.
