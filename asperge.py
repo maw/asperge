@@ -8,6 +8,7 @@ import sys
 import xlrd
 
 from dbg import dbg
+import threeletter
 
 def bail(msg, err=1):
     print("%s" % (msg,))
@@ -44,24 +45,33 @@ def ColIdxToXlName(idx):
 def idxmap(idx):
     return ColIdxToXlName(idx + 1)
 
-def get_colnames(s, x=0):
+def get_colnames(s, x=0, force_colnames=False):
     ret = []
     cache = {}
     
     for idx, v in enumerate(s.row(x)):
-        val = v.value
-        if val == "":
-            val = "%s%s" % ("xcol", idxmap(idx))
-        if val in cache:
-            cnt0 = cache[val]
-            cnt = cnt0 + 1
-            nval = "%s%d" % (val, cnt)
-            cache[val] += 1
-            cache[nval] = 0
+        if force_colnames == True:
+            cname = idxmap(idx)
         else:
-            cache[val] = 0
-            nval = val
-        ret.append('"%s"' % (nval,))
+            val = v.value
+            if val == "":
+                val = "%s%s" % ("", idxmap(idx))
+            if val in cache:
+                cnt0 = cache[val]
+                cnt = cnt0 + 1
+                nval = "%s%d" % (val, cnt)
+                cache[val] += 1
+                cache[nval] = 0
+            else:
+                cache[val] = 0
+                nval = val
+            cname = '"%s"' % (nval,)
+        # dumb dumb dumb
+        if cname.upper() in threeletter.sqlite_keywords:
+            cname = cname + '_'
+            cache[cname] = 1
+        ret.append(cname)
+        
 
     return ret
 
@@ -147,6 +157,10 @@ def main(args):
                  help="run sqlite upon load")
     p.add_option("-w", "--start-webserver", dest="web",
                  help="start webserver upon load")
+    # this is wrong, but I'm not sure what would be right
+    p.add_option("-c", "--force-column-names", dest='force_colnames',
+                 action='store_true', default=False,
+                 help="don't even try to sniff column names")
 
     (options, args) = p.parse_args()
     
@@ -154,7 +168,7 @@ def main(args):
     if len(args) != 1:
         bail("need exactly one non-flag argument")
     s = load(args[0])
-    cols = get_colnames(s)
+    cols = get_colnames(s, force_colnames=options.force_colnames)
     print("%s" % (cols,))
     from sniffer import sniff_types
     defn = sniff_types(s, cols, fast=True)
