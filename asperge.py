@@ -48,10 +48,10 @@ def get_colnames(s, x=0):
     ret = []
     cache = {}
     
-    for v in s.row(x):
+    for idx, v in enumerate(s.row(x)):
         val = v.value
         if val == "":
-            val = "xcol"
+            val = "%s%s" % ("xcol", idxmap(idx))
         if val in cache:
             cnt0 = cache[val]
             cnt = cnt0 + 1
